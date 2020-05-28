@@ -65,10 +65,17 @@
       success(res) {
         console.log(res)
         if (res.code == 200) {
-          $(".user_info img").attr("src",res.data.userPic)
+          $(".user_info img").attr("src", res.data.userPic)
           $(".user_info i").text(res.data.nickname)
-          $(".user_center_link img").attr("src",res.data.userPic)
+          $(".user_center_link img").attr("src", res.data.userPic)
         }
+      }
+    })
+
+    $(".logout").click(function () {
+      if(confirm("你确定要退出吗?")){
+        localStorage.removeItem("token")
+        location.reload()
       }
     })
   })
