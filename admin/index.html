@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>大事件-后台首页</title>
+  <title>大事件-后台首页-nm</title>
   <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/iconfont.css">
@@ -15,56 +15,86 @@
   <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
+
 <body>
   <div class="sider">
     <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
     <div class="user_info">
       <img src="images/2.jpg" alt="person">
-      <span>欢迎&nbsp;&nbsp;<i style="font-style: normal;">李思思</i></span>
+      <span>欢迎&nbsp;&nbsp;<i style="font-style: normal;">默认名字</i></span>
       <b>管理员</b>
     </div>
     <!-- 左侧导航栏 -->
     <div class="menu">
-      <div class="level01 active"><a href="#" target="main_frame"><i
-            class="iconfont icon-yidiandiantubiao04"></i><span>首页</span></a></div>
-      <div class="level01"><a href="#"><i class="iconfont icon-icon-article"></i><span>文章管理</span><b
-            class="iconfont icon-arrowdownl"></b></a></div>
-      <ul class="level02">
-        <li><a href="#" target="main_frame"><i class="iconfont icon-previewright"></i><span>文章列表</span></a></li>
-        <li><a href="#" target="main_frame"><i class="iconfont icon-previewright"></i><span>发表文章</span></a></li>
-        <li><a href="#" target="main_frame"><i class="iconfont icon-previewright"></i><span>文章类别管理</span></a>
-        </li>
-      </ul>
-
-      <div class="level01"><a href="#" target="main_frame"><i class="iconfont icon-comment"></i><span>评论管理</span></a>
+      <!-- 左侧首页 -->
+      <div class="level01 active">
+        <a href="./main_count.html" target="main_frame">
+          <i class="iconfont icon-yidiandiantubiao04"></i>
+          <span>首页</span>
+        </a>
       </div>
-      <div class="level01" id="user"><a href="#" target="main_frame"><i
-            class="iconfont icon-user"></i><span>个人中心</span></a></div>
+      <!-- 左侧文章管理 -->
+      <div class="level01">
+        <a href="#">
+          <i class="iconfont icon-icon-article"></i>
+          <span>文章管理</span>
+          <b class="iconfont icon-arrowdownl"></b>
+        </a>
+      </div>
+
+      <ul class="level02">
+        <!-- 左侧 文章列表 -->
+        <li><a href="./article_list.html" target="main_frame"><i
+              class="iconfont icon-previewright"></i><span>文章列表</span></a></li>
+        <!-- 左侧 发表文章 -->
+        <li><a href="./article_release.html" target="main_frame"><i
+              class="iconfont icon-previewright"></i><span>发表文章</span></a></li>
+        <!-- 左侧 文章类别管理 -->
+        <li><a href="./article_category.html" target="main_frame"><i
+              class="iconfont icon-previewright"></i><span>文章类别管理</span></a></li>
+      </ul>
+      <!-- 左侧评论管理 -->
+      <div class="level01">
+        <a href="./comment_list.html" target="main_frame">
+          <i class="iconfont icon-comment">
+          </i><span>评论管理</span>
+        </a>
+      </div>
+      <!-- 左侧个人中心 -->
+      <div class="level01" id="user">
+        <a href="./user.html" target="main_frame">
+          <i class="iconfont icon-user"></i>
+          <span>个人中心</span>
+        </a>
+      </div>
     </div>
     <!-- 顶部栏 -->
     <div class="header_bar">
       <div class="user_center_link">
-        <a href="./user.html" target="main_frame">个人中心</a>
+        <a href="./user.html" target="main_frame" class="user_center">个人中心</a>
         <img src="images/2.jpg" alt="person">
-        <a href="javascript:void(0)" class="logout"><i class="iconfont icon-tuichu"></i> 退出</a>
+        <a href="javascript:void(0)"  class="logout"><i class="iconfont icon-tuichu"></i> 退出</a>
       </div>
     </div>
     <!-- 右侧主体内容 -->
     <div class="main" id="main_body">
-
+      <iframe name="main_frame" src="./main_count.html" frameborder="0" style="width:100%;height:100%"></iframe>
     </div>
   </div>
+
+
 </body>
 <script src="./libs/http.js"></script>
 <script>
   $(function () {
+    //加载首页数据
     $.ajax({
       url: BigNew.user_info,
       // headers:{
       //   "Authorization":localStorage.getItem("token")
       // },
       success(res) {
-        console.log(res)
+        // console.log(res)
         if (res.code == 200) {
           $(".user_info img").attr("src", res.data.userPic)
           $(".user_info i").text(res.data.nickname)
@@ -72,12 +102,33 @@
         }
       }
     })
-
+    //登出
     $(".logout").click(function () {
-      if(confirm("你确定要退出吗?")){
+      if (confirm("你确定要退出吗?")) {
         localStorage.removeItem("token")
         location.reload()
       }
+    })
+
+    //侧边栏菜单 样式切换 
+    $(".menu .level01").click(function () {
+      $(this).addClass("active").siblings(".level01").removeClass("active")
+      if (this == $(".menu .level01:nth-child(2)")[0]) {
+        // console.log(12313)
+        $(".level02").slideToggle(500, function () {
+          $(this).prev('.level01').find("b").toggleClass('rotate0')
+          $(this).children().first().children()[0].click()
+        })
+      }
+    })
+    //2级菜单点击
+    $(".level02 li").click(function () {
+      $(this).addClass("active").siblings().removeClass("active")
+    })
+
+    //右侧个人中心点击 时 左侧个人中心选中
+    $(".user_center").click(function(){
+      $(".menu .level01:last-child").trigger("click")
     })
   })
 </script>
